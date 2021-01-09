@@ -16,7 +16,6 @@ targets <- c('country','iso3a','iso3n','data','method',
              'fda','fdase','laa','laase','N2','heda','hedase',
              'hedtl','hedtlm','hedalc','hedact','N3','ddla','ddlase')
 
-
 ####################################################
 ############### Main Functions #####################
 ####################################################
