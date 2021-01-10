@@ -42,7 +42,6 @@ row_creator_365 <- function(age_min = age_min, increment,
   agemin <- age_min
   print(agemin)
   agemax <- age_min + increment
-  #cdtl: tmp_dat$a2 365 days and tmp_dat$a5 30 days
   if(gender == 'women'){
     sex <- 'female'
     tmp_tmp_dat <- tmp_dat[which((tmp_dat$sex == "women")|
