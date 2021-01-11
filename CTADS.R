@@ -89,8 +89,19 @@ row_creator_365 <- function(age_min = age_min, increment,
                                            (tmp_tmp_dat1$ALC_50 != 98)&
                                            (tmp_tmp_dat1$ALC_50 != 99)),]
       N2 <- length(tmp_tmp_dat5$DVAGE)
-      heda <- 100*(N2/N)
-      hedase <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
+      # Denominator is the total people
+      hedaever <- 100*(N2/N)
+      hedaseever <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
+      
+      if(N1>0){
+        # Denominator is people who hav had any drink in the past year
+        heda <- 100*(N2/N1)
+        hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+      } else{
+        heda <- NA
+        hedase <- NA
+      }
+      
       hedtl <- 365
       hedtlm <- 1
       hedalc <- 54.4
@@ -104,8 +115,18 @@ row_creator_365 <- function(age_min = age_min, increment,
                                            (tmp_tmp_dat1$ALC_60 != 98)&
                                            (tmp_tmp_dat1$ALC_60 != 99)),]
       N2 <- length(tmp_tmp_dat5$DVAGE)
-      heda <- 100*(N2/N)
-      hedase <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
+      # Denominator is the total people
+      hedaever <- 100*(N2/N)
+      hedaseever <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
+      
+      if(N1>0){
+        # Denominator is people who hav had any drink in the past year
+        heda <- 100*(N2/N1)
+        hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+      } else{
+        heda <- NA
+        hedase <- NA
+      }
       hedtl <- 365
       hedtlm <- 1
       hedalc <- 68
@@ -163,11 +184,11 @@ total_increment <- max(as.numeric(dat$DVAGE), na.rm = TRUE) - 15
 
 # sex = female
 for (age_min in age_lb){
-  row <- row_creator_365(age_min = age_min, increment,
+  row <- row_creator_365(age_min = age_min, increment=4,
                          tmp_dat = dat, gender='women', 
                          alc = 54.4)
   ctads_dat = rbind(ctads_dat,row)
-  row <- row_creator_365(age_min = age_min, increment,
+  row <- row_creator_365(age_min = age_min, increment=4,
                          tmp_dat = dat, gender='women', 
                          alc = 68)
   ctads_dat = rbind(ctads_dat,row)
@@ -183,7 +204,7 @@ row <- row_creator_365(age_min = age_min, increment = total_increment,
 ctads_dat = rbind(ctads_dat,row)
 # sex = male
 for (age_min in age_lb){
-  row <- row_creator_365(age_min = age_min, increment,
+  row <- row_creator_365(age_min = age_min, increment=4,
                          tmp_dat = dat, gender='men', 
                          alc)
   ctads_dat = rbind(ctads_dat,row)
@@ -195,9 +216,8 @@ ctads_dat = rbind(ctads_dat,row)
 
 # sex = total
 for (age_min in age_lb){
-  row <- row_creator_365(age_min = age_min, increment,
-                         tmp_dat = dat, gender='all', 
-                         alc)
+  row <- row_creator_365(age_min = age_min, increment=4,
+                         tmp_dat = dat, gender='all')
   ctads_dat = rbind(ctads_dat,row)
 }
 

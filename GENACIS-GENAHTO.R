@@ -54,17 +54,17 @@ row_creator_365 <- function(agemin = age_min, increment,
   ####################CDTL = 365#########################
   ######################################################
   # cdtl, cda, cdase: Those who have reported drinking at least 1x in the last year
-  N1 <- length(tmp_tmp_dat1$age)
-  if(N1 > 0){
+  N <- length(tmp_tmp_dat1$age)
+  if(N > 0){
     ## babs (equivalent to definition of bfdb) : Abstainers (past year or more)
     # 0 No
     # 1 Yes
-    N_365 <- sum(tmp_tmp_dat1$babs==0,na.rm=TRUE)
+    N1 <- sum(tmp_tmp_dat1$babs==0,na.rm=TRUE)
     print(paste0('Number of those who have reported drinking at least 1x in the last year is ',
-                 N_365))
+                 N1))
     cdtl <- 365
-    cda <- 100*(N_365/N1)
-    cdase <- 100 * sqrt(((N_365/N1)*(1-N_365/N1))/N1)
+    cda <- 100*(N1/N)
+    cdase <- 100 * sqrt(((N1/N)*(1-N1/N))/N)
     # No data available for : fdtl, fda,fdase (Those who have not consumed alcohol in the last 1 year but have consumed alcohol before then)
     fdtl <- NA
     fda <- NA
@@ -95,30 +95,35 @@ row_creator_365 <- function(agemin = age_min, increment,
     
     if (country == "New Zealand"){
       N2 <- sum(tmp_tmp_dat1$bf60_146 != 0,na.rm=TRUE)
+      
+      # Denominator is the total people
+      hedaever <- 100*(N2/N)
+      hedaseever <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
+      
+      # Denominator is people who hav had any drink in the past year
       heda <- 100*(N2/N1)
       hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
-      if (N1>0){
-        heda <- 100*(N2/N1)
-        hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
-      } else{
-        heda <- NA
-        hedase <- NA
-      }
+      
       hedtl <- 365
       hedtlm <- 1
       hedalc <- 60
       hedact <- 'total'
     } else {
       N2 <- sum(tmp_tmp_dat1$bf60 != 0,na.rm=TRUE)
-      heda <- 100*(N2/N1)
-      hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
-      if (N1>0){
+      # Denominator is the total people
+      hedaever <- 100*(N2/N)
+      hedaseever <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
+      
+      if(N1>0){
+        # Denominator is people who hav had any drink in the past year
         heda <- 100*(N2/N1)
         hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
       } else{
         heda <- NA
         hedase <- NA
       }
+      
+
       hedtl <- 365
       hedtlm <- 1
       hedalc <- 60
