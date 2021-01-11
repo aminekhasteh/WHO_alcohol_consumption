@@ -240,8 +240,14 @@ row_creator_30 <- function(age_min = age_min, increment,
     tmp_tmp_dat5 <- tmp_tmp_dat1[which(tmp_tmp_dat1$a9 >0),]
     N2 <- length(tmp_tmp_dat5$age)
     # Denominator is people who had any drink in the past month
-    heda <- 100*(N2/N1)
-    hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+    if (N1>0){
+      heda <- 100*(N2/N1)
+      hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+    } else{
+      heda <- NA
+      hedase <- NA
+    }
+    
     # Denominator is people who hav had any drink
     hedaever <- 100*(N2/N_all)
     hedaseever <- 100 * sqrt(((N2/N_all)*(1-N2/N_all))/N_all)
@@ -279,7 +285,7 @@ row_creator_30 <- function(age_min = age_min, increment,
     row <- c( country , iso3a , iso3n , data , method ,
               populex , resprate , ref , year , sex , agemin ,
               agemax , N1 , cdtl , cda , cdase , fdtl ,
-              fda , fdase , laa , laase , N2 , heda , hedase , , hedaever, hedaseever,
+              fda , fdase , laa , laase , N2 , heda , hedase , hedaever, hedaseever,
               hedtl , hedtlm , hedalc , hedact , N3 , ddla , ddlase )
     return(row)
   } 
@@ -482,8 +488,6 @@ for (dat in file_names){
 }
 steps_dat <- as.data.frame(steps_dat)
 names(steps_dat)=targets
-
-# check : Brunei Darussalam, Egypt
 
 ###############################
 # Changing Lebanon --> Lebanese gen pop
