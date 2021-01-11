@@ -17,7 +17,7 @@ file_names <- list.files(path = "C:/Users/amink/OneDrive/Documents/Current Jobs/
 targets <- c('country','iso3a','iso3n','data','method',
              'populex','resprate','ref','year','sex','agemin',
              'agemax','N1','cdtl','cda','cdase','fdtl',
-             'fda','fdase','laa','laase','N2','heda','hedase',
+             'fda','fdase','laa','laase','N2','heda','hedase','hedaever','hedaseever',
              'hedtl','hedtlm','hedalc','hedact','N3','ddla','ddlase')
 
 # They used 77 as 'Don't know' in their questionnaire
@@ -69,6 +69,7 @@ row_creator_365 <- function(age_min = age_min, increment,
   ####################CDTL = 365#########################
   ######################################################
   N <- length(tmp_tmp_dat1$age)
+  # N_all is the total number of individuals who have ever had a drink in their life time 
   N_all <- length(tmp_tmp_dat1[which((tmp_tmp_dat1$a1 == 'yes')|
                                        (tmp_tmp_dat1$a1 == 'Yes')),]$age) # The sample size based on which "cda" (and "fda" and "laa") is calculated
   tmp_tmp_dat2 <- tmp_tmp_dat1[which((tmp_tmp_dat1$a2 == 'yes')|
@@ -110,6 +111,8 @@ row_creator_365 <- function(age_min = age_min, increment,
     N2 <- NA
     heda <- NA
     hedase <- NA
+    hedaever <- NA
+    hedaseever <- NA
     hedtl <- NA
     hedtlm <- NA
     hedalc <- NA
@@ -120,8 +123,9 @@ row_creator_365 <- function(age_min = age_min, increment,
                                          (tmp_tmp_dat1$a1 == 'Yes')),]
     if(length(tmp_tmp_dat6$age) > 0){
       # Using a7 : During the past 30 days, when you drank alcohol, how many standard drinks on average did you have during one drinking occasion
+      # non-zero A7 (drink quantity) multiplied by A6 (drink frequency) divided by 30 days (time frame) x 10, take the mean.
       tmp_tmp_dat6[is.na(tmp_tmp_dat6)] <- 0
-      a <- 10 * ((as.numeric(tmp_tmp_dat6$a7))/30)
+      a <- 10 * ((as.numeric(tmp_tmp_dat6$a7) * as.numeric(tmp_tmp_dat6$a6))/30)
       b <- a[which(a!=0)]
       if(length(b)>1){
         N3 <- length(b)
@@ -141,7 +145,7 @@ row_creator_365 <- function(age_min = age_min, increment,
     row <- c( country , iso3a , iso3n , data , method ,
               populex , resprate , ref , year , sex , agemin ,
               agemax , N1 , cdtl , cda , cdase , fdtl ,
-              fda , fdase , laa , laase , N2 , heda , hedase ,
+              fda , fdase , laa , laase , N2 , heda , hedase , hedaever, hedaseever,
               hedtl , hedtlm , hedalc , hedact , N3 , ddla , ddlase )
     return(row)
   } 
@@ -235,8 +239,13 @@ row_creator_30 <- function(age_min = age_min, increment,
     # Those who have reported binge drinking at least 60 grams or more of pure alcohol on at least one occasion in the past 30 days
     tmp_tmp_dat5 <- tmp_tmp_dat1[which(tmp_tmp_dat1$a9 >0),]
     N2 <- length(tmp_tmp_dat5$age)
-    heda <- 100*(N2/N_all)
-    hedase <- 100 * sqrt(((N2/N_all)*(1-N2/N_all))/N_all)
+    # Denominator is people who had any drink in the past month
+    heda <- 100*(N2/N1)
+    hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+    # Denominator is people who hav had any drink
+    hedaever <- 100*(N2/N_all)
+    hedaseever <- 100 * sqrt(((N2/N_all)*(1-N2/N_all))/N_all)
+    
     hedtl <- 30
     # minimum amount of binge drinking occasions per time frame
     hedtlm <- 1
@@ -250,7 +259,7 @@ row_creator_30 <- function(age_min = age_min, increment,
     if(length(tmp_tmp_dat6$age) > 0){
       # Using a7 : During the past 30 days, when you drank alcohol, how many standard drinks on average did you have during one drinking occasion
       tmp_tmp_dat6[is.na(tmp_tmp_dat6)] <- 0
-      a <- 10 * ((as.numeric(tmp_tmp_dat6$a7))/30)
+      a <- 10 * ((as.numeric(tmp_tmp_dat6$a7) * as.numeric(tmp_tmp_dat6$a6))/30)
       b <- a[which(a!=0)]
       if(length(b)>1){
         N3 <- length(b)
@@ -270,7 +279,7 @@ row_creator_30 <- function(age_min = age_min, increment,
     row <- c( country , iso3a , iso3n , data , method ,
               populex , resprate , ref , year , sex , agemin ,
               agemax , N1 , cdtl , cda , cdase , fdtl ,
-              fda , fdase , laa , laase , N2 , heda , hedase ,
+              fda , fdase , laa , laase , N2 , heda , hedase , , hedaever, hedaseever,
               hedtl , hedtlm , hedalc , hedact , N3 , ddla , ddlase )
     return(row)
   } 
