@@ -13,7 +13,7 @@ country_code_dat <- read_excel('C:/Users/amink/OneDrive/Documents/Current Jobs/W
 targets <- c('country','iso3a','iso3n','data','method',
              'populex','resprate','ref','year','sex','agemin',
              'agemax','N1','cdtl','cda','cdase','fdtl',
-             'fda','fdase','laa','laase','N2','heda','hedase',
+             'fda','fdase','laa','laase','N2','heda','hedase','hedaever','hedaseever',
              'hedtl','hedtlm','hedalc','hedact','N3','ddla','ddlase')
 
 ####################################################
@@ -97,6 +97,13 @@ row_creator_365 <- function(agemin = age_min, increment,
       N2 <- sum(tmp_tmp_dat1$bf60_146 != 0,na.rm=TRUE)
       heda <- 100*(N2/N1)
       hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+      if (N1>0){
+        heda <- 100*(N2/N1)
+        hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+      } else{
+        heda <- NA
+        hedase <- NA
+      }
       hedtl <- 365
       hedtlm <- 1
       hedalc <- 60
@@ -105,6 +112,13 @@ row_creator_365 <- function(agemin = age_min, increment,
       N2 <- sum(tmp_tmp_dat1$bf60 != 0,na.rm=TRUE)
       heda <- 100*(N2/N1)
       hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+      if (N1>0){
+        heda <- 100*(N2/N1)
+        hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+      } else{
+        heda <- NA
+        hedase <- NA
+      }
       hedtl <- 365
       hedtlm <- 1
       hedalc <- 60
@@ -135,12 +149,12 @@ row_creator_365 <- function(agemin = age_min, increment,
     row <- c( country , iso3a , iso3n , data , method ,
               populex , resprate , ref , year , sex , agemin ,
               agemax , N1 , cdtl , cda , cdase , fdtl ,
-              fda , fdase , laa , laase , N2 , heda , hedase ,
+              fda , fdase , laa , laase , N2 , heda , hedase , hedaever, hedaseever,
               hedtl , hedtlm , hedalc , hedact , N3 , ddla , ddlase )
     return(row)
   } 
   
-} # end of function 1
+} # end of function
 
 #######################################################
 #######################################################
