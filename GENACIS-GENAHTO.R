@@ -226,5 +226,5 @@ names(genacis_dat)=targets
 
 # Saving the final dataset:
 write.csv(genacis_dat,
-          "C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Final_data/STEPS.csv", row.names = FALSE)
+          "C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Final_data/GENACIS.csv", row.names = FALSE)
 

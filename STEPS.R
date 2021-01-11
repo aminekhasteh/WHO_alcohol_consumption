@@ -200,7 +200,7 @@ row_creator_30 <- function(age_min = age_min, increment,
   tmp_tmp_dat2 <- tmp_tmp_dat1[which((tmp_tmp_dat1$a5 == 'yes')|
                                        (tmp_tmp_dat1$a5 == 'Yes')),]
   N1 <- length(tmp_tmp_dat2$age)
-  print(paste0('Number of those who have reported drinking at least 1x in the last year is ',
+  print(paste0('Number of those who have reported drinking at least 1x in the last month is ',
                N1))
   if(N_all > 0){
     cdtl <- 30 # last 30 days
