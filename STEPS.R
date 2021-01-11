@@ -487,7 +487,6 @@ steps_dat[,3] <- gsub('760', '422', steps_dat[,3])
 
 
 # Saving the final dataset:
-
 write.csv(steps_dat,
           "C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Final_data/STEPS.csv", row.names = FALSE)
 
