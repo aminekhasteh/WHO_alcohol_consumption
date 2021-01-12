@@ -90,16 +90,16 @@ row_creator_365 <- function(age_min = age_min, increment,
                                            (tmp_tmp_dat1$ALC_50 != 99)),]
       N2 <- length(tmp_tmp_dat5$DVAGE)
       # Denominator is the total people
-      hedaever <- 100*(N2/N)
-      hedaseever <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
+      heda <- 100*(N2/N)
+      hedase <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
       
       if(N1>0){
         # Denominator is people who hav had any drink in the past year
-        heda <- 100*(N2/N1)
-        hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+        hedaever <- 100*(N2/N1)
+        hedaseever <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
       } else{
-        heda <- NA
-        hedase <- NA
+        hedaever <- NA
+        hedaseever <- NA
       }
       
       hedtl <- 365
@@ -116,16 +116,16 @@ row_creator_365 <- function(age_min = age_min, increment,
                                            (tmp_tmp_dat1$ALC_60 != 99)),]
       N2 <- length(tmp_tmp_dat5$DVAGE)
       # Denominator is the total people
-      hedaever <- 100*(N2/N)
-      hedaseever <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
+      heda <- 100*(N2/N)
+      hedase <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
       
       if(N1>0){
         # Denominator is people who hav had any drink in the past year
-        heda <- 100*(N2/N1)
-        hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+        hedaever <- 100*(N2/N1)
+        hedaseever <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
       } else{
-        heda <- NA
-        hedase <- NA
+        hedaever <- NA
+        hedaseever <- NA
       }
       hedtl <- 365
       hedtlm <- 1
@@ -139,10 +139,24 @@ row_creator_365 <- function(age_min = age_min, increment,
                                          (tmp_tmp_dat1$ALC_40 != 98)&
                                          (tmp_tmp_dat1$ALC_40 != 99)),]
     if(length(tmp_tmp_dat6$DVAGE) > 0){
-      #use ALC_40*ALC_50
-      a <- 13.6 * (as.numeric(tmp_tmp_dat6$ALC_40)*tmp_tmp_dat6[tmp_tmp_dat6$ALC_10==1]$ALC_10)/365
-      a <- 13.6 * ((as.numeric(tmp_tmp_dat6$ALC_60))/30) # Converting from standard drinks to grams (1 Canadian standard drink = 13.6g)
-      b <- a[which(a!=0)]
+      # use ALC_40 : Number of drinks consumed on those days - 12 mo, and ALC_10
+      # Converting from standard drinks to grams (1 Canadian standard drink = 13.6g)
+      a1 <- 13.6 * (as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==1),]$ALC_40)*
+                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==1),]$ALC_10))/365 # Drank alcoholic berages Daily or almost daily in the last 12 month
+      a2 <- 13.6 * (as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==2),]$ALC_40)*
+                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==2),]$ALC_10))/234 # Drank alcoholic berages 4 to 5 times a week in the last 12 month
+      a3 <- 13.6 * (as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==3),]$ALC_40)*
+                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==3),]$ALC_10))/130 # Drank alcoholic berages 2 to 3 times a week in the last 12 month
+      a4 <- 13.6 * (as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==4),]$ALC_40)*
+                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==4),]$ALC_10))/52 # Drank alcoholic berages Once a week in the last 12 month
+      a5 <- 13.6 * (as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==5),]$ALC_40)*
+                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==5),]$ALC_10))/30 # Drank alcoholic berages 2 to 3 times a month  in the last 12 month
+      a6 <- 13.6 * (as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==6),]$ALC_40)*
+                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==6),]$ALC_10))/12 # Drank alcoholic berages Once a month  in the last 12 month
+      a7 <- 13.6 * (as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==7),]$ALC_40)*
+                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==7),]$ALC_10))/6 # Drank alcoholic berages Less than once a month  in the last 12 month
+      
+      b <- c(a1,a2,a3,a4,a5,a6,a7)
       if(length(b)>1){
         N3 <- length(b)
         ddla <- mean(b)

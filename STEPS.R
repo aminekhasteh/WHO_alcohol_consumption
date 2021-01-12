@@ -241,16 +241,16 @@ row_creator_30 <- function(age_min = age_min, increment,
     N2 <- length(tmp_tmp_dat5$age)
     # Denominator is people who had any drink in the past month
     if (N1>0){
-      heda <- 100*(N2/N1)
-      hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+      hedaever <- 100*(N2/N1)
+      hedaseever <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
     } else{
-      heda <- NA
-      hedase <- NA
+      hedaever <- NA
+      hedaseever <- NA
     }
     
     # Denominator is people who hav had any drink
-    hedaever <- 100*(N2/N_all)
-    hedaseever <- 100 * sqrt(((N2/N_all)*(1-N2/N_all))/N_all)
+    heda <- 100*(N2/N_all)
+    hedase <- 100 * sqrt(((N2/N_all)*(1-N2/N_all))/N_all)
     
     hedtl <- 30
     # minimum amount of binge drinking occasions per time frame

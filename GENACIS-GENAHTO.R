@@ -97,12 +97,12 @@ row_creator_365 <- function(agemin = age_min, increment,
       N2 <- sum(tmp_tmp_dat1$bf60_146 != 0,na.rm=TRUE)
       
       # Denominator is the total people
-      hedaever <- 100*(N2/N)
-      hedaseever <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
+      heda <- 100*(N2/N)
+      hedase <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
       
-      # Denominator is people who hav had any drink in the past year
-      heda <- 100*(N2/N1)
-      hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+      # Denominator is people who have had any drink in the past year
+      hedaever <- 100*(N2/N1)
+      hedaseever <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
       
       hedtl <- 365
       hedtlm <- 1
@@ -111,16 +111,16 @@ row_creator_365 <- function(agemin = age_min, increment,
     } else {
       N2 <- sum(tmp_tmp_dat1$bf60 != 0,na.rm=TRUE)
       # Denominator is the total people
-      hedaever <- 100*(N2/N)
-      hedaseever <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
+      heda <- 100*(N2/N)
+      hedase <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
       
       if(N1>0){
         # Denominator is people who hav had any drink in the past year
-        heda <- 100*(N2/N1)
-        hedase <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+        hedaever <- 100*(N2/N1)
+        hedaseever <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
       } else{
-        heda <- NA
-        hedase <- NA
+        hedaever <- NA
+        hedaseever <- NA
       }
       
 
