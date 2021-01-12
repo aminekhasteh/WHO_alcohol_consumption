@@ -68,7 +68,7 @@ row_creator_365 <- function(age_min = age_min, increment,
     tmp_tmp_dat3 <- tmp_tmp_dat1[which((tmp_tmp_dat1$ALC_20 == 1) # Have had a drink
                                         & (tmp_tmp_dat1$ALC_10 == 8)) ,] # Didn'drink last year
     
-    fdtl <- 365 # last 30 days
+    fdtl <- 365 # last 365 days
     M <- length(tmp_tmp_dat3$DVAGE)
     fda <- 100*(M/N)
     fdase <- 100 * sqrt(((M/N)*(1-M/N))/N)
@@ -134,12 +134,13 @@ row_creator_365 <- function(age_min = age_min, increment,
     }
 
     # ddla,ddlase : The average daily intake of alcohol (in grams) among drinkers (not total sample)
-    tmp_tmp_dat6 <- tmp_tmp_dat1[which((tmp_tmp_dat1$ALC_60 != 96)&
-                                         (tmp_tmp_dat1$ALC_60 != 97)&
-                                         (tmp_tmp_dat1$ALC_60 != 98)&
-                                         (tmp_tmp_dat1$ALC_60 != 99)),]
+    tmp_tmp_dat6 <- tmp_tmp_dat1[which((tmp_tmp_dat1$ALC_40 != 96)&
+                                         (tmp_tmp_dat1$ALC_40 != 97)&
+                                         (tmp_tmp_dat1$ALC_40 != 98)&
+                                         (tmp_tmp_dat1$ALC_40 != 99)),]
     if(length(tmp_tmp_dat6$DVAGE) > 0){
-      # Using a7 : During the past 30 days, when you drank alcohol, how many standard drinks on average did you have during one drinking occasion
+      #use ALC_40*ALC_50
+      a <- 13.6 * (as.numeric(tmp_tmp_dat6$ALC_40)*tmp_tmp_dat6[tmp_tmp_dat6$ALC_10==1]$ALC_10)/365
       a <- 13.6 * ((as.numeric(tmp_tmp_dat6$ALC_60))/30) # Converting from standard drinks to grams (1 Canadian standard drink = 13.6g)
       b <- a[which(a!=0)]
       if(length(b)>1){
@@ -151,7 +152,6 @@ row_creator_365 <- function(age_min = age_min, increment,
         ddla = NA
         ddlase = NA
       }
-      
     } else {
       N3 = NA
       ddla = NA
