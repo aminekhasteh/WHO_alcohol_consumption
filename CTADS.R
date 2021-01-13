@@ -21,7 +21,7 @@ row_creator_365 <- function(age_min = age_min, increment,
   country <- 'Canada'
   print(country)
   iso3n <- 124
-  data <- 'STEPS'
+  data <- 'CTADS'
   method <- 'CATI interview'
   populex <- 'non-households'
   resprate <- '0.79' # ask about this!
@@ -75,7 +75,7 @@ row_creator_365 <- function(age_min = age_min, increment,
     
     #laa, lase : Those who have never consumed any alcohol in their lives (not just abstaining in the last year)
     tmp_tmp_dat4 <- tmp_tmp_dat1[which((tmp_tmp_dat1$ALC_20 == 2)),]
-    M1 <- length(tmp_tmp_dat4$age)
+    M1 <- length(tmp_tmp_dat4$DVAGE)
     
     laa <- 100*(M1/N)
     laase <- 100 * sqrt(((M1/N)*(1-M1/N))/N)
@@ -101,7 +101,6 @@ row_creator_365 <- function(age_min = age_min, increment,
         hedaever <- NA
         hedaseever <- NA
       }
-      
       hedtl <- 365
       hedtlm <- 1
       hedalc <- 54.4
