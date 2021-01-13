@@ -184,6 +184,13 @@ dat[which(dat$sex==2),]$sex= 'women'
 
 countries <- c("Australia","Chile","India","Laos","New Zealand","Nigeria","Sri Lanka","Thailand","Vietnam")
 
+# Setting the age intervals:
+summary(dat[which(dat$sex=='men'),]$age)   # Both sexes have the same max
+summary(dat[which(dat$sex=='women'),]$age) # and min values.
+ # max = 98
+age_lb <- seq(15, max(as.numeric(dat$age),na.rm=TRUE), by=5)
+
+
 # Setting the main dataset as a null data frame
 genacis_dat<-NULL
 for (country in countries){
@@ -194,9 +201,8 @@ for (country in countries){
   } else {
     method = "Face to face"
   }
-  total_increment <- max(as.numeric(tmp_dat$age), na.rm = TRUE) - 15
+  total_increment <- 98 - 15
   # list of age based on each country
-  age_lb <- c(15,20,25,30,35,40,45,50,55,60)
   
   # sex = female
   for (age_min in age_lb){
@@ -206,7 +212,7 @@ for (country in countries){
                            method = method)
     genacis_dat = rbind(genacis_dat,row)
   }
-  row <- row_creator_365(agemin = age_min, increment=total_increment,
+  row <- row_creator_365(agemin = 15, increment=total_increment,
                          country_code_dat = country_code_dat, 
                          tmp_dat = tmp_dat, gender = 'women', country = country,
                          method = method)
@@ -220,7 +226,7 @@ for (country in countries){
                            method = method)
     genacis_dat = rbind(genacis_dat,row)
   }
-  row <- row_creator_365(agemin = age_min, increment=total_increment,
+  row <- row_creator_365(agemin = 15, increment=total_increment,
                          country_code_dat = country_code_dat, 
                          tmp_dat = tmp_dat, gender = 'men', country = country,
                          method = method)
@@ -233,7 +239,7 @@ for (country in countries){
                            method = method)
     genacis_dat = rbind(genacis_dat,row)
   }
-  row <- row_creator_365(agemin = age_min, increment=total_increment,
+  row <- row_creator_365(agemin = 15, increment=total_increment,
                          country_code_dat = country_code_dat, 
                          tmp_dat = tmp_dat, gender = 'all', country = country,
                          method = method)

@@ -193,7 +193,7 @@ dat <- read.csv('C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Proj
 ctads_dat<-NULL
 
 # list of age based on each country
-age_lb <- c(15,20,25,30,35,40,45,50,55,60)
+age_lb <- seq(15, max(as.numeric(dat$DVAGE),na.rm=TRUE), by=5)
 total_increment <- max(as.numeric(dat$DVAGE), na.rm = TRUE) - 15
 
 # sex = female
@@ -208,11 +208,11 @@ for (age_min in age_lb){
   ctads_dat = rbind(ctads_dat,row)
 }
 # All female
-row <- row_creator_365(age_min = age_min, increment = total_increment,
+row <- row_creator_365(age_min = 15, increment = total_increment,
                        tmp_dat = dat, gender='women', 
                        alc = 54.4)
 ctads_dat = rbind(ctads_dat,row)
-row <- row_creator_365(age_min = age_min, increment = total_increment,
+row <- row_creator_365(age_min = 15, increment = total_increment,
                        tmp_dat = dat, gender='women', 
                        alc = 68)
 ctads_dat = rbind(ctads_dat,row)
@@ -224,7 +224,7 @@ for (age_min in age_lb){
   ctads_dat = rbind(ctads_dat,row)
 }
 # All male
-row <- row_creator_365(age_min = age_min, increment = total_increment,
+row <- row_creator_365(age_min = 15, increment = total_increment,
                        tmp_dat = dat, gender='men')
 ctads_dat = rbind(ctads_dat,row)
 
@@ -236,7 +236,7 @@ for (age_min in age_lb){
 }
 
 # ALL
-row <- row_creator_365(age_min = age_min, increment = total_increment,
+row <- row_creator_365(age_min = 15, increment = total_increment,
                        tmp_dat = dat, gender='all')
 ctads_dat = rbind(ctads_dat,row)
 

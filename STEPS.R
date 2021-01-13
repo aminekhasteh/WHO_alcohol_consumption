@@ -60,8 +60,8 @@ row_creator_365 <- function(age_min = age_min, increment,
     sex <- 'total'
     tmp_tmp_dat <- tmp_dat
   }
-  tmp_tmp_dat1 <- tmp_tmp_dat[which((tmp_tmp_dat$age >=agemin) & 
-                                      (tmp_tmp_dat$age <=agemax)),]
+  tmp_tmp_dat1 <- tmp_tmp_dat[which((as.numeric(tmp_tmp_dat$age) >=agemin) & 
+                                      (as.numeric(tmp_tmp_dat$age) <=agemax)),]
   if (length(tmp_tmp_dat1$age) > 0){
     tmp_tmp_dat1[,-which(names(tmp_tmp_dat1)=='age')][tmp_tmp_dat1[,-which(names(tmp_tmp_dat1)=='age')] == 77] <- NA
   }
@@ -189,8 +189,8 @@ row_creator_30 <- function(age_min = age_min, increment,
     sex <- 'total'
     tmp_tmp_dat <- tmp_dat
   }
-  tmp_tmp_dat1 <- tmp_tmp_dat[which((tmp_tmp_dat$age >=agemin) & 
-                                      (tmp_tmp_dat$age <=agemax)),]
+  tmp_tmp_dat1 <- tmp_tmp_dat[which((as.numeric(tmp_tmp_dat$age) >=agemin) & 
+                                      (as.numeric(tmp_tmp_dat$age) <=agemax)),]
   if (length(tmp_tmp_dat1$age) > 0){
     tmp_tmp_dat1[,-which(names(tmp_tmp_dat1)=='age')][tmp_tmp_dat1[,-which(names(tmp_tmp_dat1)=='age')] == 77] <- NA
   }
@@ -418,7 +418,7 @@ for (dat in file_names){
   }
   total_increment <- max(as.numeric(tmp_dat$age), na.rm = TRUE) - 15
   # list of age based on each country
-  age_lb <- c(15,20,25,30,35,40,45,50,55,60)
+  age_lb <- seq(15, max(as.numeric(tmp_dat$age),na.rm=TRUE), by=5)
   
   # sex = female
   for (age_min in age_lb){
