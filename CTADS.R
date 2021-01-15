@@ -8,7 +8,7 @@ library(readstata13) # to read .dta files (better!)
 targets <- c('country','iso3a','iso3n','data','method',
              'populex','resprate','ref','year','sex','agemin',
              'agemax','N1','cdtl','cda','cdase','fdtl',
-             'fda','fdase','laa','laase','N2','heda','hedase','hedaever','hedaseever',
+             'fda','fdase','laa','laase','N2','heda','hedase','heda365','hedase365',
              'hedtl','hedtlm','hedalc','hedact','N3','ddla','ddlase')
 
 ####################################################
@@ -24,7 +24,7 @@ row_creator_365 <- function(age_min = age_min, increment,
   data <- 'CTADS'
   method <- 'CATI interview'
   populex <- 'non-households'
-  resprate <- '0.79' # ask about this!
+  resprate <- 'unknwon'
   ref <- 'SDA@CHASS - UofT'
   year <- 2017
   agemin <- age_min
@@ -95,11 +95,11 @@ row_creator_365 <- function(age_min = age_min, increment,
       
       if(N1>0){
         # Denominator is people who hav had any drink in the past year
-        hedaever <- 100*(N2/N1)
-        hedaseever <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+        heda365 <- 100*(N2/N1)
+        hedase365 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
       } else{
-        hedaever <- NA
-        hedaseever <- NA
+        heda365 <- NA
+        hedase365 <- NA
       }
       hedtl <- 365
       hedtlm <- 1
@@ -107,12 +107,13 @@ row_creator_365 <- function(age_min = age_min, increment,
       hedact <- 'total'
     } else if (((sex=="female") & (alc==68))|
                ((sex=="male") & (alc==68))|
-               (sex=="total")){
+               (sex="total")){
       tmp_tmp_dat5 <- tmp_tmp_dat1[which((tmp_tmp_dat1$ALC_60 != 8)&
                                            (tmp_tmp_dat1$ALC_60 != 96)&
                                            (tmp_tmp_dat1$ALC_60 != 97)&
                                            (tmp_tmp_dat1$ALC_60 != 98)&
                                            (tmp_tmp_dat1$ALC_60 != 99)),]
+      
       N2 <- length(tmp_tmp_dat5$DVAGE)
       # Denominator is the total people
       heda <- 100*(N2/N)
@@ -120,17 +121,17 @@ row_creator_365 <- function(age_min = age_min, increment,
       
       if(N1>0){
         # Denominator is people who hav had any drink in the past year
-        hedaever <- 100*(N2/N1)
-        hedaseever <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+        heda365 <- 100*(N2/N1)
+        hedase365 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
       } else{
-        hedaever <- NA
-        hedaseever <- NA
+        heda365 <- NA
+        hedase365 <- NA
       }
       hedtl <- 365
       hedtlm <- 1
       hedalc <- 68
       hedact <- 'total'
-    }
+    } 
 
     # ddla,ddlase : The average daily intake of alcohol (in grams) among drinkers (not total sample)
     tmp_tmp_dat6 <- tmp_tmp_dat1[which((tmp_tmp_dat1$ALC_40 != 96)&
@@ -173,7 +174,7 @@ row_creator_365 <- function(age_min = age_min, increment,
     row <- c( country , iso3a , iso3n , data , method ,
               populex , resprate , ref , year , sex , agemin ,
               agemax , N1 , cdtl , cda , cdase , fdtl ,
-              fda , fdase , laa , laase , N2 , heda , hedase , hedaever, hedaseever,
+              fda , fdase , laa , laase , N2 , heda , hedase , heda365, hedase365,
               hedtl , hedtlm , hedalc , hedact , N3 , ddla , ddlase )
     return(row)
   } 
@@ -218,8 +219,7 @@ ctads_dat = rbind(ctads_dat,row)
 # sex = male
 for (age_min in age_lb){
   row <- row_creator_365(age_min = age_min, increment=4,
-                         tmp_dat = dat, gender='men', 
-                         alc)
+                         tmp_dat = dat, gender='men')
   ctads_dat = rbind(ctads_dat,row)
 }
 # All male

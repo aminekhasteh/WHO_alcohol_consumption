@@ -13,7 +13,7 @@ country_code_dat <- read_excel('C:/Users/amink/OneDrive/Documents/Current Jobs/W
 targets <- c('country','iso3a','iso3n','data','method',
              'populex','resprate','ref','year','sex','agemin',
              'agemax','N1','cdtl','cda','cdase','fdtl',
-             'fda','fdase','laa','laase','N2','heda','hedase','hedaever','hedaseever',
+             'fda','fdase','laa','laase','N2','heda','hedase','heda365','hedase365',
              'hedtl','hedtlm','hedalc','hedact','N3','ddla','ddlase')
 
 ####################################################
@@ -101,8 +101,8 @@ row_creator_365 <- function(agemin = age_min, increment,
       hedase <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
       
       # Denominator is people who have had any drink in the past year
-      hedaever <- 100*(N2/N1)
-      hedaseever <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+      heda365 <- 100*(N2/N1)
+      hedase365 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
       
       hedtl <- 365
       hedtlm <- 1
@@ -116,11 +116,11 @@ row_creator_365 <- function(agemin = age_min, increment,
       
       if(N1>0){
         # Denominator is people who hav had any drink in the past year
-        hedaever <- 100*(N2/N1)
-        hedaseever <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+        heda365 <- 100*(N2/N1)
+        hedase365 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
       } else{
-        hedaever <- NA
-        hedaseever <- NA
+        heda365 <- NA
+        hedase365 <- NA
       }
       
 
@@ -154,7 +154,7 @@ row_creator_365 <- function(agemin = age_min, increment,
     row <- c( country , iso3a , iso3n , data , method ,
               populex , resprate , ref , year , sex , agemin ,
               agemax , N1 , cdtl , cda , cdase , fdtl ,
-              fda , fdase , laa , laase , N2 , heda , hedase , hedaever, hedaseever,
+              fda , fdase , laa , laase , N2 , heda , hedase , heda365, hedase365,
               hedtl , hedtlm , hedalc , hedact , N3 , ddla , ddlase )
     return(row)
   } 
