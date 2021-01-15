@@ -14,7 +14,9 @@ targets <- c('country','iso3a','iso3n','data','method',
              'populex','resprate','ref','year','sex','agemin',
              'agemax','N1','cdtl','cda','cdase','fdtl',
              'fda','fdase','laa','laase','N2','heda','hedase','heda365','hedase365',
-             'hedtl','hedtlm','hedalc','hedact','N3','ddla','ddlase')
+             'hedtl','hedtlm', 'N2_12' , 'heda_12' , 'hedase_12' , 
+             'heda365_12', 'hedase365_12', 'hedtlm_12',
+             'hedalc','hedact','N3','ddla','ddlase')
 
 ####################################################
 ############### Main Functions #####################
@@ -27,9 +29,29 @@ row_creator_365 <- function(agemin = age_min, increment,
   iso3a <- country_code_dat[which(country_code_dat$country == country),]$iso3a
   print(country)
   iso3n <- as.numeric(country_code_dat[which(country_code_dat$iso3a == iso3a),]$iso3n)
-  data <- 'GENACIS-GENAHTO'
+  data <- 'GENACIS-GENAHTO team’'
   populex <- 'unknown'
-  resprate <- 'unknwon'
+  if(country == 'Chile'){
+    resprate <- 0.72
+  } else if (country == 'Nigeria'){
+    resprate <- 0.99
+  } else if (country == 'India'){
+    resprate <- 0.97
+  } else if (country == 'Sri Lanka'){
+    resprate <- 0.93
+  } else if (country == 'Thailand'){
+    resprate <- 0.94
+  } else if (country == 'Vietnam'){
+    resprate <- 0.99
+  } else if (country == 'Laos'){
+    resprate <- 0.99
+  } else if (country == 'Australia'){
+    resprate <- 0.35
+  } else if (country == 'New Zealand'){
+    resprate <- 0.64
+  } else {
+    resprate <- 'unknown'
+  }
   ref <- 'CAMH/GMEL'
   year <- as.vector(country_dat[which(country_dat$Country == country),]$Year)
   print(agemin)
@@ -94,38 +116,54 @@ row_creator_365 <- function(agemin = age_min, increment,
     # 7             Everyday
     
     if (country == "New Zealand"){
-      N2 <- sum(tmp_tmp_dat1$bf60_146 != 0,na.rm=TRUE)
+      N2 <- sum(tmp_tmp_dat1$bf60_146 != 0,na.rm=TRUE) # at least one heavy episodic drinking in the past 12 months
+      N2_12 <- sum(tmp_tmp_dat1$bf60_146 > 1,na.rm=TRUE) # at least monthly heavy episodic drinking in the past 12 months
       
       # Denominator is the total people
       heda <- 100*(N2/N)
       hedase <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
-      
+
+      heda_12 <- 100*(N2_12/N)
+      hedase_12 <- 100 * sqrt(((N2_12/N)*(1-N2_12/N))/N)
+     
       # Denominator is people who have had any drink in the past year
       heda365 <- 100*(N2/N1)
       hedase365 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
       
+      heda365_12 <- 100*(N2_12/N1)
+      hedase365_12 <- 100 * sqrt(((N2_12/N1)*(1-N2_12/N1))/N1)
+      
       hedtl <- 365
       hedtlm <- 1
+      hedtlm_12 <- 12
       hedalc <- 60
       hedact <- 'total'
     } else {
-      N2 <- sum(tmp_tmp_dat1$bf60 != 0,na.rm=TRUE)
+      N2 <- sum(tmp_tmp_dat1$bf60 != 0,na.rm=TRUE) # at least one heavy episodic drinking in the past 12 months
+      N2_12 <- sum(tmp_tmp_dat1$bf60 > 1,na.rm=TRUE) # at least monthly heavy episodic drinking in the past 12 months
+      
       # Denominator is the total people
       heda <- 100*(N2/N)
       hedase <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
+      
+      heda_12 <- 100*(N2_12/N)
+      hedase_12 <- 100 * sqrt(((N2_12/N)*(1-N2_12/N))/N)
       
       if(N1>0){
         # Denominator is people who hav had any drink in the past year
         heda365 <- 100*(N2/N1)
         hedase365 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+        heda365_12 <- 100*(N2_12/N1)
+        hedase365_12 <- 100 * sqrt(((N2_12/N1)*(1-N2_12/N1))/N1)
       } else{
         heda365 <- NA
         hedase365 <- NA
+        heda365_12 <- NA
+        hedase365_12 <- NA
       }
-      
-
       hedtl <- 365
       hedtlm <- 1
+      hedtlm_12 <- 12
       hedalc <- 60
       hedact <- 'total'
     }
@@ -154,8 +192,9 @@ row_creator_365 <- function(agemin = age_min, increment,
     row <- c( country , iso3a , iso3n , data , method ,
               populex , resprate , ref , year , sex , agemin ,
               agemax , N1 , cdtl , cda , cdase , fdtl ,
-              fda , fdase , laa , laase , N2 , heda , hedase , heda365, hedase365,
-              hedtl , hedtlm , hedalc , hedact , N3 , ddla , ddlase )
+              fda , fdase , laa , laase , N2 , heda , hedase , heda365, hedase365, 
+              hedtl , hedtlm ,N2_12 , heda_12 , hedase_12 , heda365_12, hedase365_12, hedtlm_12,
+              hedalc , hedact , N3 , ddla , ddlase )
     return(row)
   } 
   

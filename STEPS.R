@@ -17,7 +17,7 @@ file_names <- list.files(path = "C:/Users/amink/OneDrive/Documents/Current Jobs/
 targets <- c('country','iso3a','iso3n','data','method',
              'populex','resprate','ref','year','sex','agemin',
              'agemax','N1','cdtl','cda','cdase','fdtl',
-             'fda','fdase','laa','laase','N2','heda','hedase','heda365','hedase365',
+             'fda','fdase','laa','laase','N2','heda','hedase','heda30','hedase30',
              'hedtl','hedtlm','hedalc','hedact','N3','ddla','ddlase')
 
 # They used 77 as 'Don't know' in their questionnaire
@@ -111,8 +111,8 @@ row_creator_365 <- function(age_min = age_min, increment,
     N2 <- NA
     heda <- NA
     hedase <- NA
-    heda365 <- NA
-    hedase365 <- NA
+    heda30 <- NA
+    hedase30 <- NA
     hedtl <- NA
     hedtlm <- NA
     hedalc <- NA
@@ -145,7 +145,7 @@ row_creator_365 <- function(age_min = age_min, increment,
     row <- c( country , iso3a , iso3n , data , method ,
               populex , resprate , ref , year , sex , agemin ,
               agemax , N1 , cdtl , cda , cdase , fdtl ,
-              fda , fdase , laa , laase , N2 , heda , hedase , heda365, hedase365,
+              fda , fdase , laa , laase , N2 , heda , hedase , heda30, hedase30,
               hedtl , hedtlm , hedalc , hedact , N3 , ddla , ddlase )
     return(row)
   } 
@@ -241,11 +241,11 @@ row_creator_30 <- function(age_min = age_min, increment,
     N2 <- length(tmp_tmp_dat5$age)
     # Denominator is people who had any drink in the past month
     if (N1>0){
-      heda365 <- 100*(N2/N1)
-      hedase365 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+      heda30 <- 100*(N2/N1)
+      hedase30 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
     } else{
-      heda365 <- NA
-      hedase365 <- NA
+      heda30 <- NA
+      hedase30 <- NA
     }
     
     # Denominator is people who hav had any drink
@@ -285,7 +285,7 @@ row_creator_30 <- function(age_min = age_min, increment,
     row <- c( country , iso3a , iso3n , data , method ,
               populex , resprate , ref , year , sex , agemin ,
               agemax , N1 , cdtl , cda , cdase , fdtl ,
-              fda , fdase , laa , laase , N2 , heda , hedase , heda365, hedase365,
+              fda , fdase , laa , laase , N2 , heda , hedase , heda30, hedase30,
               hedtl , hedtlm , hedalc , hedact , N3 , ddla , ddlase )
     return(row)
   } 

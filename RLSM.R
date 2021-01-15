@@ -9,7 +9,7 @@ library(foreign)
 targets <- c('country','iso3a','iso3n','data','method',
              'populex','resprate','ref','year','sex','agemin',
              'agemax','N1','cdtl','cda','cdase','fdtl',
-             'fda','fdase','laa','laase','N2','heda','hedase','heda365','hedase365',
+             'fda','fdase','laa','laase','N2','heda','hedase','heda30','hedase30',
              'hedtl','hedtlm','hedalc','hedact','N3','ddla','ddlase')
 
 ####################################################
@@ -112,15 +112,15 @@ row_creator_365 <- function(age_min = age_min, increment,
       
       if(N1>0){
         # Denominator is people who hav had any drink in the past year
-        heda365 <- 100*(N2/N1)
-        hedase365 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+        heda30 <- 100*(N2/N1)
+        hedase30 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
         hedtl <- 30
         hedtlm <- 1
         hedalc <- 40
         hedact <- 'total'
       } else{
-        heda365 <- NA
-        hedase365 <- NA
+        heda30 <- NA
+        hedase30 <- NA
         hedtl <- NA
         hedtlm <- NA
         hedalc <- NA
@@ -136,15 +136,15 @@ row_creator_365 <- function(age_min = age_min, increment,
       
       if(N1>0){
         # Denominator is people who hav had any drink in the past year
-        heda365 <- 100*(N2/N1)
-        hedase365 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+        heda30 <- 100*(N2/N1)
+        hedase30 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
         hedtl <- 30
         hedtlm <- 1
         hedalc <- 60
         hedact <- 'total'
       } else{
-        heda365 <- NA
-        hedase365 <- NA
+        heda30 <- NA
+        hedase30 <- NA
         hedtl <- NA
         hedtlm <- NA
         hedalc <- NA
@@ -163,7 +163,7 @@ row_creator_365 <- function(age_min = age_min, increment,
     a4 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==4),]$total_alc_gram)*
              as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==4),]$M81))/4 # Drank alcoholic bevrages Once a week in the last month
     a5 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==5),]$total_alc_gram)*
-             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==5),]$M81))/2.5 # Drank alcoholic bevrages 2 to 3 times in the last 12 month
+             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==5),]$M81))/2.5 # Drank alcoholic bevrages 2 to 3 times in the last month
     a6 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==6),]$total_alc_gram)*
              as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==6),]$M81))/1 # Drank alcoholic bevrages Once in the last month
       
@@ -180,7 +180,7 @@ row_creator_365 <- function(age_min = age_min, increment,
     row <- c( country , iso3a , iso3n , data , method ,
               populex , resprate , ref , year , sex , agemin ,
               agemax , N1 , cdtl , cda , cdase , fdtl ,
-              fda , fdase , laa , laase , N2 , heda , hedase , heda365, hedase365,
+              fda , fdase , laa , laase , N2 , heda , hedase , heda30, hedase30,
               hedtl , hedtlm , hedalc , hedact , N3 , ddla , ddlase )
     return(row)
   } 

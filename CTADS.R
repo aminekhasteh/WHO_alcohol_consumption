@@ -9,7 +9,9 @@ targets <- c('country','iso3a','iso3n','data','method',
              'populex','resprate','ref','year','sex','agemin',
              'agemax','N1','cdtl','cda','cdase','fdtl',
              'fda','fdase','laa','laase','N2','heda','hedase','heda365','hedase365',
-             'hedtl','hedtlm','hedalc','hedact','N3','ddla','ddlase')
+             'hedtl','hedtlm', 'N2_12' , 'heda_12' , 'hedase_12' , 
+             'heda365_12', 'hedase365_12', 'hedtlm_12',
+             'hedalc','hedact','N3','ddla','ddlase')
 
 ####################################################
 ############### Main Functions #####################
@@ -82,53 +84,90 @@ row_creator_365 <- function(age_min = age_min, increment,
     
     # ALC_60: Frequency of drinking five or more drinks on one occasion -12 mo. Using this for males.
     # ALC_50: Frequency of drinking four or more drinks on one occasion -12 mo. Using this for females.
+    # During the past 12 months, how often have you had four or more drinks on one occasion?
+      
+    # 01: Daily or almost daily
+    # 02: 4 to 5 times a week
+    # 03: 2 to 3 times a week
+    # 04: Once a week
+    # 05: 2 to 3 times a month
+    # 06: Once a month
+    # 07: Less than once a month
+    # 08: Never
+    # 98: RF
+    # 99: DK
+    
     if((sex=="female") & (alc==54.4)){
       tmp_tmp_dat5 <- tmp_tmp_dat1[which((tmp_tmp_dat1$ALC_50 != 8)&
                                            (tmp_tmp_dat1$ALC_50 != 96)&
                                            (tmp_tmp_dat1$ALC_50 != 97)&
                                            (tmp_tmp_dat1$ALC_50 != 98)&
                                            (tmp_tmp_dat1$ALC_50 != 99)),]
+      
+      tmp_tmp_dat5_12 <- tmp_tmp_dat5[which(tmp_tmp_dat5$ALC_50 != 7),] # People who drank at least monthly in the past 12 months
       N2 <- length(tmp_tmp_dat5$DVAGE)
+      N2_12 <- length(tmp_tmp_dat5_12$DVAGE)
       # Denominator is the total people
       heda <- 100*(N2/N)
       hedase <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
+      
+      heda_12 <- 100*(N2_12/N)
+      hedase_12 <- 100 * sqrt(((N2_12/N)*(1-N2_12/N))/N)
       
       if(N1>0){
         # Denominator is people who hav had any drink in the past year
         heda365 <- 100*(N2/N1)
         hedase365 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+        
+        heda365_12 <- 100*(N2_12/N1)
+        hedase365_12 <- 100 * sqrt(((N2_12/N1)*(1-N2_12/N1))/N1)
       } else{
         heda365 <- NA
         hedase365 <- NA
+        
+        heda365_12 <- NA
+        hedase365_12 <- NA
       }
       hedtl <- 365
       hedtlm <- 1
+      hedtlm_12 <- 12
       hedalc <- 54.4
       hedact <- 'total'
     } else if (((sex=="female") & (alc==68))|
                ((sex=="male") & (alc==68))|
-               (sex="total")){
+               (sex=="total")){
       tmp_tmp_dat5 <- tmp_tmp_dat1[which((tmp_tmp_dat1$ALC_60 != 8)&
                                            (tmp_tmp_dat1$ALC_60 != 96)&
                                            (tmp_tmp_dat1$ALC_60 != 97)&
                                            (tmp_tmp_dat1$ALC_60 != 98)&
                                            (tmp_tmp_dat1$ALC_60 != 99)),]
-      
+      tmp_tmp_dat5_12 <- tmp_tmp_dat5[which(tmp_tmp_dat5$ALC_60 != 7),] # People who drank at least monthly in the past 12 months
       N2 <- length(tmp_tmp_dat5$DVAGE)
+      N2_12 <- length(tmp_tmp_dat5_12$DVAGE)
       # Denominator is the total people
       heda <- 100*(N2/N)
       hedase <- 100 * sqrt(((N2/N)*(1-N2/N))/N)
+      
+      heda_12 <- 100*(N2_12/N)
+      hedase_12 <- 100 * sqrt(((N2_12/N)*(1-N2_12/N))/N)
       
       if(N1>0){
         # Denominator is people who hav had any drink in the past year
         heda365 <- 100*(N2/N1)
         hedase365 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
+        
+        heda365_12 <- 100*(N2_12/N1)
+        hedase365_12 <- 100 * sqrt(((N2_12/N1)*(1-N2_12/N1))/N1)
       } else{
         heda365 <- NA
         hedase365 <- NA
+        
+        heda365_12 <- NA
+        hedase365_12 <- NA
       }
       hedtl <- 365
       hedtlm <- 1
+      hedtlm_12 <- 12
       hedalc <- 68
       hedact <- 'total'
     } 
@@ -174,8 +213,9 @@ row_creator_365 <- function(age_min = age_min, increment,
     row <- c( country , iso3a , iso3n , data , method ,
               populex , resprate , ref , year , sex , agemin ,
               agemax , N1 , cdtl , cda , cdase , fdtl ,
-              fda , fdase , laa , laase , N2 , heda , hedase , heda365, hedase365,
-              hedtl , hedtlm , hedalc , hedact , N3 , ddla , ddlase )
+              fda , fdase , laa , laase , N2 , heda , hedase , heda365, hedase365, 
+              hedtl , hedtlm ,N2_12 , heda_12 , hedase_12 , heda365_12, hedase365_12, hedtlm_12,
+              hedalc , hedact , N3 , ddla , ddlase )
     return(row)
   } 
   
