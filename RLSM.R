@@ -111,7 +111,7 @@ row_creator_365 <- function(age_min = age_min, increment,
       hedase <- 100 * sqrt(((N2/N_all)*(1-N2/N_all))/N_all)
       
       if(N1>0){
-        # Denominator is people who hav had any drink in the past year
+        # Denominator is people who hav had any drink in the past month
         heda30 <- 100*(N2/N1)
         hedase30 <- 100 * sqrt(((N2/N1)*(1-N2/N1))/N1)
         hedtl <- 30
@@ -157,15 +157,15 @@ row_creator_365 <- function(age_min = age_min, increment,
     a1 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==1),]$total_alc_gram)*
              as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==1),]$M81))/30 # Drank alcoholic bevrages Daily or almost daily in the last month
     a2 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==2),]$total_alc_gram)*
-             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==2),]$M81))/20 # Drank alcoholic bevrages 4 to 6 times a week in the last month
+             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==2),]$M81))/30 # Drank alcoholic bevrages 4 to 6 times a week in the last month
     a3 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==3),]$total_alc_gram)*
-             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==3),]$M81))/10 # Drank alcoholic bevrages 2 to 3 times a week in the last month
+             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==3),]$M81))/30 # Drank alcoholic bevrages 2 to 3 times a week in the last month
     a4 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==4),]$total_alc_gram)*
-             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==4),]$M81))/4 # Drank alcoholic bevrages Once a week in the last month
+             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==4),]$M81))/30 # Drank alcoholic bevrages Once a week in the last month
     a5 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==5),]$total_alc_gram)*
-             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==5),]$M81))/2.5 # Drank alcoholic bevrages 2 to 3 times in the last month
+             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==5),]$M81))/30 # Drank alcoholic bevrages 2 to 3 times in the last month
     a6 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==6),]$total_alc_gram)*
-             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==6),]$M81))/1 # Drank alcoholic bevrages Once in the last month
+             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==6),]$M81))/30 # Drank alcoholic bevrages Once in the last month
       
     b <- c(a1,a2,a3,a4,a5,a6)
     if(length(b)>1){
