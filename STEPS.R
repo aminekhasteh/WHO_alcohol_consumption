@@ -503,3 +503,151 @@ steps_dat[,3] <- gsub('760', '422', steps_dat[,3])
 write.csv(steps_dat,
           "C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Final_data/STEPS.csv", row.names = FALSE)
 
+
+##########################################################################################################################################################################
+##################################################*WEIGHTS*#################################################################################################################
+##########################################################################################################################################################################
+library(survey)
+library(Hmisc)
+
+for (dat in file_names){
+  if(dat == "eth2015.dta"){
+    tmp_dat <- read_dta(paste0("C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Project/Individual Survey datasets/New data_obtainined 2020/STEPS (new)/new STEPS data/",dat))
+    tmp_dat <- as.matrix(tmp_dat)
+    tmp_dat <- as.data.frame(tmp_dat)
+    names(tmp_dat)[3] = 'sex'
+    names(tmp_dat)[4] = 'age'
+    tmp_dat[which(tmp_dat$sex==1),]$sex= 'men'
+    tmp_dat[which(tmp_dat$sex==2),]$sex= 'women'
+    tmp_dat[which(tmp_dat$a1==1),]$a1= 'yes'
+    tmp_dat[which(tmp_dat$a1==2),]$a1= 'no'
+    tmp_dat[which(tmp_dat$a2==1),]$a2= 'yes'
+    tmp_dat[which(tmp_dat$a2==2),]$a2= 'no'
+    tmp_dat[which(tmp_dat$a5==1),]$a5= 'yes'
+    tmp_dat[which(tmp_dat$a5==2),]$a5= 'no'
+    tmp_dat <- tmp_dat[!is.na(tmp_dat$age),]
+
+    
+  } else if (dat=="geo2016.dta") {
+    tmp_dat <- read.dta13(paste0("C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Project/Individual Survey datasets/New data_obtainined 2020/STEPS (new)/new STEPS data/",dat))
+    names(tmp_dat)[2] <- 'sex'
+    tmp_dat <- tmp_dat[!is.na(tmp_dat$age),]
+
+  } else if (dat=="qat2012.dta") { next # Qatar doesn't have any of Alcohol questionnaire
+  } else if (dat=="SYC2013.xlsx"){
+    # this file has very different varibales, doesn't have all questions from the questionnaire
+    tmp_dat <- read_excel(paste0("C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Project/Individual Survey datasets/New data_obtainined 2020/STEPS (new)/new STEPS data/",
+                                 dat), sheet = "Dataall-nonames")
+    tmp_dat <- as.matrix(tmp_dat)
+    tmp_dat <- as.data.frame(tmp_dat)
+    tmp_dat$a1 <- tmp_dat$ohever
+    tmp_dat[which(tmp_dat$a1==1),]$a1= 'yes'
+    tmp_dat[which(tmp_dat$a1==2),]$a1= 'no'
+    
+    # ever had a drink in the last 365 days?
+    # drinkmax : In the past 12 months, what was the largest amount of drinks you had on one single day, accounting for all types of drinks alltogether?
+    tmp_dat$a2 <- ''
+    tmp_dat[which(!is.na(tmp_dat$drinkmax)),]$a2= 'yes'
+    tmp_dat[which(is.na(tmp_dat$drinkmax)),]$a2= 'no'
+    
+    # ever had a drink in the past 30 days?
+    # ohnow : Do you currently drink alcohol beverages such as beer, wine, spirit or other other alcoholic drinks at least once per month?
+    tmp_dat$a5 <- ''
+    tmp_dat[which(!is.na(tmp_dat$ohnow)),]$a5= 'yes'
+    tmp_dat[which(is.na(tmp_dat$ohnow)),]$a5= 'no'
+    
+    # During the past 30 days, how many times did you have six or more standard drinks in a single drinking occasion?
+    # In a typical month (30 days), on how many days do you drink more than 5 (men)/4 (women) standard drinks per day, on average? (card: 1beer=1glass wine/liquor=1peg whisky)
+    tmp_dat$a9 <- as.numeric(tmp_dat$drink5d)
+    
+    # During the past 30 days, when you drank alcohol, how many standard drinks on average did you have during one drinking occasion?
+    # On average, how many alcohol drinks (beer, wine, spirit, etc) do you have per day between Monday and Thursday, Friday and Sat, Sun, think of any type of alcohol drinks?
+    tmp_dat$a7 <- 30 * ((as.numeric(tmp_dat$drinkworkday) + # multiplying it by 30 since the function divides it by 30
+                           as.numeric(tmp_dat$drinkfriday) +
+                           as.numeric(tmp_dat$drinksat) +
+                           as.numeric(tmp_dat$drinksun))/5) # taking the weekly average drinking (only for the 5 days)
+    
+    tmp_dat <- tmp_dat[!is.na(tmp_dat$age),]
+    
+  } else if(dat=="ury2013.dta") { # tis file has different variables
+    tmp_dat <- read_dta(paste0("C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Project/Individual Survey datasets/New data_obtainined 2020/STEPS (new)/new STEPS data/",dat))
+    tmp_dat <- as.matrix(tmp_dat)
+    tmp_dat <- as.data.frame(tmp_dat)
+    # changing varibale names:
+    tmp_dat$sex <- as.numeric(tmp_dat$c1)
+    tmp_dat[which(tmp_dat$sex==1),]$sex= 'men'
+    tmp_dat[which(tmp_dat$sex==2),]$sex= 'women'
+    tmp_dat$age <- as.numeric(tmp_dat$age)
+    # assuming a1 is yes for everyone, since this variable is in this dataset
+    tmp_dat$a1 <- 'yes' # need to find better a1, otherwise all will be fda = 0
+    tmp_dat$a5 <- as.numeric(tmp_dat$x33)
+    tmp_dat[which(tmp_dat$a5==1),]$a5= 'yes'
+    tmp_dat[which(tmp_dat$a5==2),]$a5= 'no'
+    tmp_dat$a2 <- as.numeric(tmp_dat$a1b)
+    tmp_dat[which(tmp_dat$a2==1),]$a2= 'yes'
+    tmp_dat[which(tmp_dat$a2==2),]$a2= 'no'
+    tmp_dat$a9 <- as.numeric(tmp_dat$x25)
+    tmp_dat$a7 <- 30 * ((as.numeric(tmp_dat$a9a) + # multiplying it by 30 since the function divides it by 30
+                           as.numeric(tmp_dat$a9b) +
+                           as.numeric(tmp_dat$a9c) +
+                           as.numeric(tmp_dat$a9d)+
+                           as.numeric(tmp_dat$a9e)+
+                           as.numeric(tmp_dat$a9f)+
+                           as.numeric(tmp_dat$a9g))/7) # taking the weekly average drinking 
+    
+    tmp_dat <- tmp_dat[!is.na(tmp_dat$age),]
+    
+  } else if((dat=="irq2015.dta")|
+            (dat=="jor2019.dta")|
+            (dat=="ukr2019.dta")|
+            (dat=="mng2019.dta")){
+    tmp_dat <- read.dta13(paste0("C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Project/Individual Survey datasets/New data_obtainined 2020/STEPS (new)/new STEPS data/",dat))
+    tmp_dat <- tmp_dat[!is.na(tmp_dat$age),]
+    # changing 1 --> yes and 2 --> no
+    tmp_dat[which(tmp_dat$a1==1),]$a1= 'yes'
+    tmp_dat[which(tmp_dat$a1==2),]$a1= 'no'
+    tmp_dat[which(tmp_dat$a2==1),]$a2= 'yes'
+    tmp_dat[which(tmp_dat$a2==2),]$a2= 'no'
+    tmp_dat[which(tmp_dat$a5==1),]$a5= 'yes'
+    tmp_dat[which(tmp_dat$a5==2),]$a5= 'no'
+
+  } else {
+    tmp_dat <- read.dta13(paste0("C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Project/Individual Survey datasets/New data_obtainined 2020/STEPS (new)/new STEPS data/",dat))
+    tmp_dat <- tmp_dat[!is.na(tmp_dat$age),]
+  }
+}
+
+
+
+#	PROPORTION OF CASES WITH WEIGHT INFORMATION?
+WGT 	<- steps[,.(PSU = sum(!is.na(psu))/.N,
+                 STRATA = sum(!is.na(strata))/.N,
+                 WEIGHT = sum(!is.na(weight))/.N),
+              by=.(iso3a,year)]
+# --> most countries with more than 99% information in all three vars:
+WGT[PSU>0.99 & STRATA>0.99 & WEIGHT>0.99] ## n=76
+# --> some countries with no information in all three vars:
+WGT[PSU==0 & STRATA==0 & WEIGHT==0] ## n=21
+# --> few countries in between --> potentially problematic: n=2
+WGT[(PSU<.99 & PSU>0) | (STRATA<.99 & STRATA>0) | (WEIGHT<.99 & WEIGHT>0)]
+
+steps
+
+#	weighted mean of LA/FD/CD = 1 ? 
+##	--> wait until weight vars are clarified!
+svy <- svydesign(id=~1,strata=~strata,weights=~weight,
+                 data=steps[interaction(iso3a,year) %in% interaction(WGT[PSU==1 & STRATA==1 & WEIGHT==1,.(iso3a,year)])])
+
+round(
+  svymean(~ cdi,svy,na.rm=T)[1] + svymean(~ fdi,svy,na.rm=T)[1] + svymean(~ lai,svy,na.rm=T)[1],
+  2) == 1
+
+# TRUE = ok
+
+################################################################################################################################################################################
+################################################################################################################################################################################
+################################################################################################################################################################################
+
+
+
+
