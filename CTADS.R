@@ -286,3 +286,38 @@ names(ctads_dat)=targets
 write.csv(ctads_dat,
           "C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Final_data/CTADS.csv", row.names = FALSE)
 
+##################################################################################################
+##################################################################################################
+############################################# WEIGHT CHECK #######################################
+##################################################################################################
+##################################################################################################
+library(Hmisc)
+library(survey)
+
+##	outcome and weights:
+a1 	<- numeric(nrow(dat))
+a1[dat$ALC_10==1] <- 1
+a1[is.na(dat$ALC_10)] <- NA
+table(a1)
+
+dat$a1 <- a1
+wght <- dat$WTPP
+
+##	trial and error:
+mean(a1, na.rm=TRUE) ## 3.046058%
+weighted.mean(a1,wght, na.rm=TRUE) ## 6.680718% --> b?m!
+
+##	confidence interval??
+#wtd.mean(a1, weights=wght, normwt="ignored", na.rm=TRUE)
+m <- 	wtd.mean(a1, weights=wght, normwt=FALSE, na.rm=TRUE)
+v <- 	wtd.var(a1, weights=wght, normwt=FALSE, na.rm=TRUE)
+se <- 	sqrt(v/length(a1[complete.cases(a1)]))
+m - 1.96*se ## 0.06297975#
+m + 1.96*se ## 0.07063462#
+##########################  CI_95% = (0.06297975,0.07063462)
+
+##	via svydesign?
+svy <- svydesign(~1, data=dat, weights=dat$wtpp)
+svymean(~ a1, svy, na.rm=TRUE) ##  mean = 3.0461%, SE=0.0013
+svyciprop(~ a1, svy, na.rm=TRUE, method = c("logit")) ##  mean = 3.05,CI_95% = (0.0279,0.03)
+dat$WTPP
