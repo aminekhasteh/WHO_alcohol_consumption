@@ -108,22 +108,3 @@ GENACIS/GENAHTO: see variable btyv in the codebook: 'Total consumption of alcoho
 Respondents reported the quantity and frequency of consuming each of four alcohol beverage types in the past 12 months: beer, wine, spirits and other beverages. The quantity of each of the alcohol beverage types was capped to correct for any unrealistically high reported quantity values. The total consumption of alcohol in the last 12 months for each alcohol beverage type was calculated by multiplying the usual quantity consumed per occasion they consumed the beverage type and frequency of drinking the beverage type. Then the total consumption of alcohol per year from all beverages was derived by the summing the total consumption of alcohol per year from each of the four alcohol beverage types: beer, wine, spirits, and other beverages. Note – units are in centilitres of pure alcohol or standard drinks (1 centilitre = 10ml = 1 standard drink).
 o	Convert from centrelitres to grams (1 centilitre = 1 standard drink = 10 grams)
  
-CTADS
--Change HEDAEVER and HEDASEEVER to the names HEDA365 and HEDASE365: DONE
--Are you able to add in at least monthly heavy episodic drinking (i.e. HEDTLM = 12)? : DONE
--Are you able add in Lifetime Abstainer data? I know we talked about the issue with the ‘valid skip’ but want to see if we can obtain any LA data.: I have included it. (Total number of people who have never drank / Total number of people within that age interval)
- 
--GENACIS
--Same as above for variable name change (HEDA365 and HEDASE365): DONE
--Are you able to add in at least monthly heavy episodic drinking (i.e. HEDTLM = 12)? : DONE
--add in response rates by country for variable ‘resprate’ (see attachment for data). Divide value by 100 (e.g. Chile response rate of 72%  = .72 for ‘resprate’). : DONE
--for variable ‘ref’, update to ‘GENACIS-GENAHTO team’ : DONE
- 
-STEPS
--Change HEDAEVER and HEDASEEVER to the names HEDA30 and  HEDASE30: DONE
--Are you able to add in at least monthly heavy episodic drinking (i.e. HEDTLM = 12)?  We only have variables for heavy episodic drinking in the past 30 days
- 
-RLMS (once its ready):
--change HEDAEVER name to whichever is relevant (i.e .30-day) DONE
--Are you able to add in at least monthly heavy episodic drinking (i.e. HEDTLM = 12)? We only have variables for heavy episodic drinking in the past 30 days
-
