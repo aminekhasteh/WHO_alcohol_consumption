@@ -183,17 +183,17 @@ row_creator_365 <- function(age_min = age_min, increment,
       a1 <- 13.6 * (as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==1),]$ALC_40)*
                       as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==1),]$ALC_10))/365 # Drank alcoholic berages Daily or almost daily in the last 12 month
       a2 <- 13.6 * (as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==2),]$ALC_40)*
-                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==2),]$ALC_10))/365 # Drank alcoholic berages 4 to 5 times a week in the last 12 month
+                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==2),]$ALC_10))/234 # Drank alcoholic berages 4 to 5 times a week in the last 12 month
       a3 <- 13.6 * (as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==3),]$ALC_40)*
-                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==3),]$ALC_10))/365 # Drank alcoholic berages 2 to 3 times a week in the last 12 month
+                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==3),]$ALC_10))/130 # Drank alcoholic berages 2 to 3 times a week in the last 12 month
       a4 <- 13.6 * (as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==4),]$ALC_40)*
-                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==4),]$ALC_10))/365 # Drank alcoholic berages Once a week in the last 12 month
+                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==4),]$ALC_10))/52 # Drank alcoholic berages Once a week in the last 12 month
       a5 <- 13.6 * (as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==5),]$ALC_40)*
-                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==5),]$ALC_10))/365 # Drank alcoholic berages 2 to 3 times a month  in the last 12 month
+                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==5),]$ALC_10))/30 # Drank alcoholic berages 2 to 3 times a month  in the last 12 month
       a6 <- 13.6 * (as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==6),]$ALC_40)*
-                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==6),]$ALC_10))/365 # Drank alcoholic berages Once a month  in the last 12 month
+                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==6),]$ALC_10))/12 # Drank alcoholic berages Once a month  in the last 12 month
       a7 <- 13.6 * (as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==7),]$ALC_40)*
-                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==7),]$ALC_10))/365 # Drank alcoholic berages Less than once a month  in the last 12 month
+                      as.numeric(tmp_tmp_dat6[which(tmp_tmp_dat6$ALC_10==7),]$ALC_10))/6 # Drank alcoholic berages Less than once a month  in the last 12 month
       
       b <- c(a1,a2,a3,a4,a5,a6,a7)
       if(length(b)>1){
@@ -227,7 +227,7 @@ row_creator_365 <- function(age_min = age_min, increment,
 
 # Importing the CTADS dataset:
 
-dat <- read.csv('C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Project/Individual Survey datasets/New data_obtainined 2020/CTADS 2017 (new)/CTADS 2017 data.csv')
+dat <- read.csv('C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Datasets/CTADS 2017 (new)/CTADS 2017 data.csv')
 
 # Setting the main dataset as a null data frame
 ctads_dat<-NULL
@@ -284,7 +284,7 @@ names(ctads_dat)=targets
 
 # Saving the final dataset:
 write.csv(ctads_dat,
-          "C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Final_data/CTADS.csv", row.names = FALSE)
+          "C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Aggregated_Datasets/CTADS.csv", row.names = FALSE)
 
 ##################################################################################################
 ##################################################################################################

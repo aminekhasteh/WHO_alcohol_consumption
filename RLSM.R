@@ -152,22 +152,29 @@ row_creator_365 <- function(age_min = age_min, increment,
       }
     } 
     # ddla,ddlase : The average daily intake of alcohol (in grams) among drinkers (not total sample)
-    # M81 ALCOHOL-USE FREQUENCY LAST 30D 
+      # M81 ALCOHOL-USE FREQUENCY LAST 30D -------> Not using these!
+    
+    # Using these instead
+    # M84.8B HOMEMADE WINE PER DAY - GRAMS *14.2% || M84.8D
+    # M84.12B BRAGA PER DAY - GRAMS *5.4% || M84.12D
+    # M84112B HOMEMADE BEER PER DAY - GRAMS  *5.4% || M84112D
+    # M84111B THE INDUSTRIAL PRODUCTION OF BEER PER DAY - GRAMS *5.4% || M84111D
+    # M84.6B GRAMS OTHER ALCOHOL *20% || M84.6D
+    # M84.5B GRAMS OF VODKA_HARD LIQUOR *40% || M84.5D
+    # M84.4B GRAMS OF HOMEMADE LIQUOR *50% || M84.4D
+    ################################################################# YES = 1
+    ################################################################# NO = 2
       
-    a1 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==1),]$total_alc_gram)*
-             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==1),]$M81))/30 # Drank alcoholic bevrages Daily or almost daily in the last month
-    a2 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==2),]$total_alc_gram)*
-             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==2),]$M81))/30 # Drank alcoholic bevrages 4 to 6 times a week in the last month
-    a3 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==3),]$total_alc_gram)*
-             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==3),]$M81))/30 # Drank alcoholic bevrages 2 to 3 times a week in the last month
-    a4 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==4),]$total_alc_gram)*
-             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==4),]$M81))/30 # Drank alcoholic bevrages Once a week in the last month
-    a5 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==5),]$total_alc_gram)*
-             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==5),]$M81))/30 # Drank alcoholic bevrages 2 to 3 times in the last month
-    a6 <- (as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==6),]$total_alc_gram)*
-             as.numeric(tmp_tmp_dat1[which(tmp_tmp_dat1$M81==6),]$M81))/30 # Drank alcoholic bevrages Once in the last month
-      
-    b <- c(a1,a2,a3,a4,a5,a6)
+    
+    a1 <- (as.numeric(tmp_tmp_dat1$M84_8D*tmp_tmp_dat1$M84_8B)*0.142)/30 # HOMEMADE WINE PER DAY
+    a2 <- (as.numeric(tmp_tmp_dat1$M84_12D*tmp_tmp_dat1$M84_12B)*0.054)/30 # BRAGA PER DAY    
+    a3 <- (as.numeric(tmp_tmp_dat1$M84112D*tmp_tmp_dat1$M84112B)*0.054)/30 # HOMEMADE BEER PER DAY
+    a4 <- (as.numeric(tmp_tmp_dat1$M84111D*tmp_tmp_dat1$M84111B)*0.054)/30 # THE INDUSTRIAL PRODUCTION OF BEER PER DAY
+    a5 <- (as.numeric(tmp_tmp_dat1$M84_6D*tmp_tmp_dat1$M84_6B)*0.20)/30 # OTHER ALCOHOL
+    a6 <- (as.numeric(tmp_tmp_dat1$M84_5D*tmp_tmp_dat1$M84_5B)*0.40)/30 # VODKA_HARD LIQUOR
+    a7 <- (as.numeric(tmp_tmp_dat1$M84_4D*tmp_tmp_dat1$M84_4B)*0.50)/30 # HOMEMADE LIQUOR
+    
+    b <- a1+a2+a3+a4+a5+a6+a7
     if(length(b)>1){
       N3 <- length(b)
       ddla <- mean(b)
@@ -193,7 +200,7 @@ row_creator_365 <- function(age_min = age_min, increment,
 
 # Importing the RLMS dataset:
 
-dat <- read.csv("C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Project/Individual Survey datasets/New data_obtainined 2020/RLMS (new)/USER_RLMS-HSE_IND_2016_2019_v2_eng.csv")
+dat <- read.csv("C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Datasets/RLMS (new)/USER_RLMS-HSE_IND_2016_2019_v2_eng.csv")
 summary(dat$age) # removing individual with age = 99999997
 dat <- dat[which(dat$age!=99999997),]
 
@@ -244,5 +251,5 @@ names(rlsm_dat)=targets
 
 # Saving the final dataset:
 write.csv(rlsm_dat,
-          "C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Final_data/RLSM.csv", row.names = FALSE)
+          "C:/Users/amink/OneDrive/Documents/Current Jobs/WHO project/Aggregated_Datasets/RLSM.csv", row.names = FALSE)
 
